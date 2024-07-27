@@ -1,16 +1,16 @@
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../privater/AuthPrivater";
+import { sendEmailVerification, updateProfile } from "firebase/auth";
 
 
 const Register = () => {
      const { createUser } = useContext(AuthContext);
-     const navigate = useNavigate()
      // console.log(createUser)
      const handelRegister = e => {
 
           e.preventDefault();
-          // const name = e.target.name.value;
+          const name = e.target.name.value;
           const email = e.target.email.value;
           const password = e.target.password.value;
           // console.log(name, email, password)
@@ -18,9 +18,28 @@ const Register = () => {
           // create User 
           createUser(email, password)
                .then(result => {
-                    console.log(result.user);
+                    const user = result.user;
                     e.target.reset();
-                    navigate("/");
+
+                    // display name
+                    updateProfile(user, {
+                         displayName: name
+                    })
+                         .then(() => {
+
+                         })
+                         .catch(error => {
+                              const errorMessage = error.message;
+                              console.log(errorMessage)
+                         })
+                    // send email verification
+                    sendEmailVerification(user)
+                         .then(() => {
+                              // Email verification sent!
+                              // ...
+                              alert("Email verification sent!")
+                         });
+
                })
                .catch(error => {
                     console.error(error.message)

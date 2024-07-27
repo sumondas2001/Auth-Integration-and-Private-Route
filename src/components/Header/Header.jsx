@@ -4,19 +4,29 @@ import { AuthContext } from "../../privater/AuthPrivater";
 
 
 const Header = () => {
-     const { user, logOut } = useContext(AuthContext)
+     const { user, logOut } = useContext(AuthContext);
+
+     // const { emailVerified, email } = user;
+
      const handelLogOut = () => {
           logOut();
      }
      const navLinks = <>
-          <li><NavLink to={"/"}>Home</NavLink></li>
-          <li><NavLink to={"/login"}>Login</NavLink></li>
-          <li><NavLink to={"/register"}>Register</NavLink></li>
-          <li><NavLink to={"/orders"}>Orders</NavLink></li>
-          {user &&
+
+          {user && user.emailVerified ?
                <>
+                    <li><NavLink to={"/"}>Home</NavLink></li>
+                    <li><NavLink to={"/login"}>Login</NavLink></li>
+                    <li><NavLink to={"/register"}>Register</NavLink></li>
+                    <li><NavLink to={"/orders"}>Orders</NavLink></li>
                     <li><NavLink to={"/profile"}>Profile</NavLink></li>
                     <li><NavLink to={"/dashboard"}>Dashboard</NavLink></li>
+               </> : <>
+
+                    <li><NavLink to={"/"}>Home</NavLink></li>
+                    <li><NavLink to={"/login"}>Login</NavLink></li>
+                    <li><NavLink to={"/register"}>Register</NavLink></li>
+                    <li><NavLink to={"/orders"}>Orders</NavLink></li>
                </>
           }
      </>
@@ -53,7 +63,7 @@ const Header = () => {
                </div>
                <div>
                     {
-                         user ? <>
+                         user && user.emailVerified ? <>
                               <span className="text-lg text-green-300 pr-2 pl-4">{user.email}</span>
                               <button onClick={handelLogOut} className="btn btn-warning">Sign Out</button>
                          </> :

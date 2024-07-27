@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../privater/AuthPrivater";
+import { sendEmailVerification } from "firebase/auth";
 
 const Login = () => {
      const { signInUser, googleLogin } = useContext(AuthContext);
@@ -15,9 +16,19 @@ const Login = () => {
 
           signInUser(email, password)
                .then(result => {
-                    console.log(result.user);
+                    const user = result.user;
+                    console.log(user)
+
+
+                    if (user.emailVerified) {
+                         alert("Login successfully");
+                         navigate("/");
+                    } else {
+
+                         alert("Plz  verification your Email address")
+
+                    }
                     e.target.reset();
-                    navigate("/")
                })
                .catch(error => {
                     console.error(error.message)

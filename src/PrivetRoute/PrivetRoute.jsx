@@ -11,7 +11,7 @@ const PrivetRoute = ({ children }) => {
                <span className="loading loading-spinner  text-secondary"></span>
           </div>
      }
-     if (user) {
+     if (user && user.emailVerified) {
           return children;
      }
      return (
